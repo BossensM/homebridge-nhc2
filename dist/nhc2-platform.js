@@ -106,7 +106,7 @@ class NHC2Platform {
             },
             "switched-generic": {
                 service: this.Service.Switch,
-                handlers: [this.addTriggerCharacteristic],
+                handlers: [this.addStatusChangeCharacteristic],
             },
         };
         Object.keys(mapping).forEach(model => {

@@ -127,7 +127,7 @@ class NHC2Platform implements DynamicPlatformPlugin {
       },
       "switched-generic": {
         service: this.Service.Switch,
-        handlers: [this.addTriggerCharacteristic],
+        handlers: [this.addStatusChangeCharacteristic],
       },
     };
 
