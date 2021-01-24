@@ -21,6 +21,8 @@ import { NHC2Logger } from "./nhc2-logger";
 const PLUGIN_NAME = "homebridge-nhc2";
 const PLATFORM_NAME = "NHC2";
 
+const INCOMPATIBLE_TYPES = ["audiocontrol"];
+
 let hap: HAP;
 let Accessory: typeof PlatformAccessory;
 
@@ -123,13 +125,19 @@ class NHC2Platform implements DynamicPlatformPlugin {
         service: this.Service.Switch,
         handlers: [this.addTriggerCharacteristic],
       },
+      "switched-generic": {
+        service: this.Service.Switch,
+        handlers: [this.addTriggerCharacteristic],
+      },
     };
 
     Object.keys(mapping).forEach(model => {
       const config = mapping[model];
       const accs = accessories.filter(
         acc =>
-          !this.suppressedAccessories.includes(acc.Uuid) && acc.Model === model,
+          !this.suppressedAccessories.includes(acc.Uuid) &&
+          acc.Model === model &&
+          !INCOMPATIBLE_TYPES.includes(acc.Type || ""),
       );
       accs.forEach(acc => {
         const newAccessory = new Accessory(acc.Name as string, acc.Uuid);
